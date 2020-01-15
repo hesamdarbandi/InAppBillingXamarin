@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
@@ -26,6 +29,57 @@ namespace InAppBilling
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
+
+            try
+            {
+                _connectionHelper = new InAppBillingConnectionHelper(this, Config.BazarKey);
+                _connectionHelper.OnConnected += async (sender, e) =>
+                {
+                    _billingHelper = _connectionHelper.BillingHelper;
+                };
+
+                _connectionHelper.Connect();
+            }
+
+            catch (Exception er)
+            {
+                var d = er.Message;
+            }
+        }
+
+        private async Task<bool> CheckPurchase()
+        {
+            try
+            {
+
+                if (_billingHelper == null)
+                {
+                    Toast.MakeText(this, "عدم اتصال به کافه بازار و یا مایکت لطفا برنامه را مجددا اجرا کنید", ToastLength.Long);
+                    return false;
+                }
+
+                var products = await _billingHelper.QueryInventoryAsync(new List<string>() { Billing.Billing.Sku }, ItemType.Subscription);
+                if (products == null || !products.Any())
+                {
+                    Toast.MakeText(this, "لطفا در اپلیکیشن کافه بازار و یا مایکت وارد اکانت شوید ", ToastLength.Long);
+                    return false;
+                }
+
+                var isPurchase = _billingHelper.GetPurchases(ItemType.InApp);
+                if (isPurchase != null && isPurchase.Any(en => en.ProductId == products.FirstOrDefault().ProductId))
+                {
+                    return true;
+                }
+
+                _billingHelper.LaunchPurchaseFlow(Billing.Billing.Sku, ItemType.Subscription, "");
+                return false;
+
+            }
+            catch (Exception er)
+            {
+                var msg = er.Message;
+                return false;
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -51,6 +105,8 @@ namespace InAppBilling
             Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
         }
+
+     
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -70,6 +70,7 @@
     <Compile Include="Billing\Extensions.cs" />
     <Compile Include="Billing\InAppBillingConnectionHelper.cs" />
     <Compile Include="Billing\Receipt.cs" />
+    <Compile Include="Config.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
