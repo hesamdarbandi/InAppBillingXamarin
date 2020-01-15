@@ -61,6 +61,15 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Billing\Security.cs" />
+    <Compile Include="Billing\InAppBillingHelper.cs" />
+    <Compile Include="Billing\Purchase.cs" />
+    <Compile Include="Billing\BillingConstants.cs" />
+    <Compile Include="Billing\IInAppBillingHelper.cs" />
+    <Compile Include="Billing\GooglePlayPurchaseService.cs" />
+    <Compile Include="Billing\Extensions.cs" />
+    <Compile Include="Billing\InAppBillingConnectionHelper.cs" />
+    <Compile Include="Billing\Receipt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -106,6 +115,13 @@
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
+    <PackageReference Include="Refit">
+      <Version>4.7.9</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidInterfaceDescription Include="Billing\IInAppBillingService.aidl" />
+    <AndroidInterfaceDescription Include="Billing\Bundle.aidl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

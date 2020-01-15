@@ -6,13 +6,15 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using InAppBilling.Billing;
 
 namespace InAppBilling
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-
+        InAppBillingConnectionHelper _connectionHelper;
+        IInAppBillingHelper _billingHelper;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
